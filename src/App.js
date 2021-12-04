@@ -23,70 +23,28 @@
 // }
 
 import React, {Component} from "react"
-import Header from "./components/Header";
-import List from "./components/List";
-import Footer from "./components/Footer";
-import './App.css'
+import axios from "axios";
 
 export default class App extends Component {
-    // 初始化状态
-    state = {todos:[
-            {id:'001',name:'吃饭',done:true},
-            {id:'002',name:'睡觉',done:true},
-            {id:'003',name:'打代码',done:false},
-            {id:'004',name:'逛街',done:true}
-        ]}
-
-    addTodo = (todoObj)=> {
-        const {todos} = this.state
-        const newTodos = [todoObj, ...todos]
-        this.setState({todos:newTodos})
+    getStudentData = () => {
+        axios.get('http://localhost:3000/api1/students').then(
+            response => {console.log('成功了', response.data);},
+            error => {console.log('失败了', error);}
+        )
     }
 
-    updateTodo = (id, done) => {
-        const {todos} = this.state
-        const newTodos = todos.map((todoObj) => {
-            if (todoObj.id === id) return {...todoObj, done}
-            else return todoObj
-
-        })
-        this.setState({todos:newTodos})
+    getStudentData1 = () => {
+        axios.get('http://localhost:3000/api2/students').then(
+            response => {console.log('成功了', response.data);},
+            error => {console.log('失败了', error);}
+        )
     }
 
-    deleteTodo = (id) => {
-        const {todos} = this.state
-        const newTodos = todos.filter((todoObj)=> {
-            return todoObj.id !== id
-        })
-
-        this.setState({todos: newTodos})
-    }
-
-    checkAllTodo = (done) => {
-        const {todos} = this.state
-        const newTodos = todos.map((todoObj) => {
-            return{...todoObj,done}
-        })
-        this.setState({todos:newTodos})
-    }
-
-    clearAllDone = () => {
-        const {todos} = this.state
-        const newTodos = todos.filter((todoObj)=> {
-            return !todoObj.done
-        })
-
-        this.setState({todos:newTodos})
-    }
     render() {
-        const {todos} = this.state
         return (
-            <div className="todo-container">
-                <div className="todo-wrap">
-                    <Header addTodo={this.addTodo}/>
-                    <List todos={todos} updateTodo = {this.updateTodo} deleteTodo={this.deleteTodo} />
-                    <Footer todos={todos} checkAllTodo={this.checkAllTodo} clearAllDone={this.clearAllDone}/>
-                </div>
+            <div>
+                <button onClick={this.getStudentData}>点我获取</button>
+                <button onClick={this.getStudentData1}>点我获取 from springboot server</button>
             </div>
         )
     }
